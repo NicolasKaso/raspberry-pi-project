@@ -4,7 +4,7 @@ from datetime import datetime
 FLIP_DURATION_MS = 400
 
 project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
-font_path = os.path.join(project_root, "fonts", "DSEG7Classic-Bold.ttf")
+font_path_clock = os.path.join(project_root, "fonts", "ArchivoBlack-Regular.ttf")
 
 MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
@@ -36,9 +36,10 @@ class MainPage:
 
 #fonts
 
-        self.hour_font = pygame.font.Font(font_path, 200)
-        self.minute_font = pygame.font.Font(font_path, 200)
-        self.colon_font = pygame.font.Font(font_path, 200)
+        self.hour_font = pygame.font.Font(font_path_clock, 230)
+        self.minute_font = pygame.font.Font(font_path_clock, 230)
+        self.colon_font = pygame.font.Font(font_path_clock, 230)
+        self.am_pm_font = pygame.font.Font(font_path_clock, 50)
         self.date_font = pygame.font.SysFont("dejavusans", 40)
 
 
@@ -157,14 +158,6 @@ class MainPage:
         minute_rect.centery = 170
 
 
-#placement logic
-
-        #width = surface.get_width()
-        #height = surface.get_height()
-        #top_half = pygame.Rect(0, 0, width, height // 2)
-        #bottom_half = pygame.Rect(0, height // 2, width, height //2)
-
-
 #date 
 
         date_surface = self.date_font.render(date_string, True, self.WHITE)
@@ -175,10 +168,10 @@ class MainPage:
 
 #AM/PM
 
-        am_pm_surface = self.date_font.render(am_pm, True, self.WHITE)
+        am_pm_surface = self.am_pm_font.render(am_pm, True, self.WHITE)
         am_pm_rect = am_pm_surface.get_rect()
-        am_pm_rect.left = hour_rect.left
-        am_pm_rect.top = hour_rect.bottom
+        am_pm_rect.left = hour_rect.left + 10
+        am_pm_rect.top = hour_rect.bottom - 40
 
 
 #blit on the screen
@@ -188,5 +181,4 @@ class MainPage:
         screen.blit(minute_surface, minute_rect)
         screen.blit(date_surface, date_rect)
         screen.blit(am_pm_surface, am_pm_rect)
-
 
