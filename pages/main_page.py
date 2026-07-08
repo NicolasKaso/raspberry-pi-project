@@ -6,7 +6,7 @@ FLIP_DURATION_MS = 400
 project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
 font_path_clock = os.path.join(project_root, "fonts", "ArchivoBlack-Regular.ttf")
 font_path_am_pm = os.path.join(project_root, "fonts", "ArchivoNarrow-Bold.ttf")
-font_path_clock = os.path.join(project_root, "fonts", "ArchivoNarrow-Bold.ttf")
+font_path_date = os.path.join(project_root, "fonts", "ArchivoNarrow-Bold.ttf")
 
 MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
