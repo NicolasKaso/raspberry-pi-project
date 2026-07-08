@@ -5,7 +5,8 @@ FLIP_DURATION_MS = 400
 
 project_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
 font_path_clock = os.path.join(project_root, "fonts", "ArchivoBlack-Regular.ttf")
-font_path_am_pm = os.path.join(project_root, "fonts", "DSEG7Classic-Bold.ttf")
+font_path_am_pm = os.path.join(project_root, "fonts", "ArchivoNarrow-Bold.ttf")
+font_path_clock = os.path.join(project_root, "fonts", "ArchivoNarrow-Bold.ttf")
 
 MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
@@ -40,8 +41,8 @@ class MainPage:
         self.hour_font = pygame.font.Font(font_path_clock, 230)
         self.minute_font = pygame.font.Font(font_path_clock, 230)
         self.colon_font = pygame.font.Font(font_path_clock, 230)
-        self.am_pm_font = pygame.font.Font(font_path_am_pm, 50)
-        self.date_font = pygame.font.SysFont("dejavusans", 40)
+        self.am_pm_font = pygame.font.Font(font_path_am_pm, 60)
+        self.date_font = pygame.font.Font(font_path_date, 40)
 
 
     def update(self): #UPDATE PART OF THE CODE
@@ -141,7 +142,6 @@ class MainPage:
         total_width = hour_width + minute_width + colon_width
 
         start_x = (800 - total_width) // 2
-        #start_x = start_x + 15 # experimental to fix the slight offset
 
 
 #clock surface placement
@@ -172,7 +172,7 @@ class MainPage:
         am_pm_surface = self.am_pm_font.render(am_pm, True, self.WHITE)
         am_pm_rect = am_pm_surface.get_rect()
         am_pm_rect.left = hour_rect.left + 10
-        am_pm_rect.top = hour_rect.bottom - 40
+        am_pm_rect.top = hour_rect.bottom - 60
 
 
 #blit on the screen
