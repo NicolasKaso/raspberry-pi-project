@@ -213,10 +213,53 @@ class MainPage:
         am_pm_rect.top = hour_rect.bottom - 60
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+# ANIMATION
+    
+    #hour
+        if self.hour_animation_start is None:
+            screen.blit(hour_surface, hour_rect)
+
+        else:
+            screen.blit(next_hour_surface, (hour_card.left, hour_card.top), area = (0, 0, next_hour_rect.width, (next_hour_rect.height // 2 )))
+            screen.blit(hour_surface, (hour_card.left, hour_card.centery), area = (0, next_hour_rect.height //2 , hour_rect.width, (hour_rect.height // 2 )))
+
+
+            # make the top be the new number and the bottom stay the same
+
+                #wait for the animation time to end
+
+                #make the top and the bottm the same
+
+    #minute
+        if self.minute_animation_start is None:
+            screen.blit(minute_surface, minute_rect)
+
+
+        else:
+            screen.blit(next_minute_surface, (minute_card.left, minute_card.top), area = (0, 0, next_minute_rect.width, (next_minute_rect.height //2 )))
+            screen.blit(minute_surface, (minute_card.left, minute_card.centery), area = (0, next_minute_rect.height //2 , minute_rect.width, (minute_rect.height // 2 )))
+
+
+
+
+
+
+
+
 #blit on the screen
 
-        screen.blit(hour_surface, hour_rect, area = (0, 0, hour_rect.width, (hour_rect.height // 2)))
-        screen.blit(minute_surface, minute_rect)
         screen.blit(date_surface, date_rect)
         screen.blit(am_pm_surface, am_pm_rect)
 
