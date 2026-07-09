@@ -47,7 +47,7 @@ class MainPage:
         self.date_font = pygame.font.Font(font_path_date, 40)
 
 
-    def update(self): #UPDATE PART OF THE CODE
+    def update(self):                                                                               #UPDATE PART OF THE CODE
         
         now = datetime.now()
 
@@ -100,33 +100,58 @@ class MainPage:
 
     def draw(self, screen, data): #drawing part of the code
 
-#am/pm logic
+
+#12 hour logic current hour
 
         display_hour = self.hour % 12
 
         if display_hour == 0:
             display_hour = 12
 
+
+#am/pm logic
+
         am_pm = "am" if self.hour < 12 else "pm"
+
+
+#12 hour logic next hour
+
+        display_next_hour = self.next_hour % 12
+
+        if display_next_hour ==0:
+            display_next_hour = 12
 
 #strings
 
         hour_time_string = f"{display_hour:02d}"
         minute_time_string = f"{self.minute:02d}"
+        next_hour_time_string = f"{display_next_hour:02d}"
+        next_minute_time_string = f"{self.next_minute:02d}"
         date_string = f"{MONTH_NAMES[self.month -1]} {self.day}, {self.year}"
 
 
-#hour clock numbers
+#hour clock numbers current
 
         hour_surface = self.hour_font.render(hour_time_string, True, self.WHITE)
         hour_rect = hour_surface.get_rect()
 
 
-#minute clock numbers
+#minute clock numbers current
 
         minute_surface = self.minute_font.render(minute_time_string, True, self.WHITE)
         minute_rect = minute_surface.get_rect()
 
+
+#hour clock numbers next 
+
+        next_hour_surface = self.hour_font.render(next_hour_time_string, True, self.WHITE)
+        next_hour_rect = next_hour_surface.get_rect()
+
+
+#minute clock numbers next
+
+        next_minute_surface = self.minute_font.render(next_minute_time_string, True, self.WHITE)
+        next_minute_rect = next_minute_surface.get_rect()
 
 #card placement and size
         
@@ -190,7 +215,7 @@ class MainPage:
 
 #blit on the screen
 
-        screen.blit(hour_surface, hour_rect)
+        screen.blit(hour_surface, hour_rect, area = (0, 0, hour_rect.width, (hour_rect.height // 2)))
         screen.blit(minute_surface, minute_rect)
         screen.blit(date_surface, date_rect)
         screen.blit(am_pm_surface, am_pm_rect)
