@@ -17,6 +17,7 @@ class MainPage:
 #variables
 
         self.WHITE = (255, 255, 255)
+        self.GREY = (60, 60, 60)
 
         now = datetime.now()
         
@@ -115,33 +116,16 @@ class MainPage:
         date_string = f"{MONTH_NAMES[self.month -1]} {self.day}, {self.year}"
 
 
-#hour clock
+#hour clock numbers
 
         hour_surface = self.hour_font.render(hour_time_string, True, self.WHITE)
         hour_rect = hour_surface.get_rect()
 
 
-#colon clock
-
-        colon_surface = self.colon_font.render(":", True, self.WHITE)
-        colon_rect = colon_surface.get_rect()
-
-
-#minute clock
+#minute clock numbers
 
         minute_surface = self.minute_font.render(minute_time_string, True, self.WHITE)
         minute_rect = minute_surface.get_rect()
-
-
-#surface widths
-
-        hour_width = hour_rect.width
-        minute_width = minute_rect.width
-        colon_width = colon_rect.width
-
-        total_width = hour_width + minute_width + colon_width
-
-        start_x = (800 - total_width) // 2
 
 
 #clock surface placement
@@ -150,13 +134,31 @@ class MainPage:
         hour_rect.left = start_x
         hour_rect.centery = 170
     
-    #colon
-        colon_rect.left = hour_rect.right
-        colon_rect.centery = 170
-
     #minute
         minute_rect.left = colon_rect.right
         minute_rect.centery = 170
+
+
+#card placement                                                    #HERE IS THE PLACE TO CONTINUE
+
+        hour_card.width = hour_rect.width + 40
+        minute_card.width = minute_rect.width + 40
+
+        card_total_width = hour_card.width + minute_card.width + 20
+
+        card_start_x = (800 - card_total_width) // 2
+
+
+#hour clock card
+
+        hour_card_surface = pygame.draw.rect(screen, self.GREY, card_start_x, 170, hour_rect.width + 40, hour_rect.height + 40)
+        hour_card_rect = hour_card_surface.get_rect()
+
+
+#minute clock card
+
+        minute_card_surface = pygame.draw.rect(screen, self.GREY, minute_card.right + 20, 170, minute_rect.width + 40, hour_rect.height + 40)
+        minute_card_rect = minute_card_surface.get_rect()
 
 
 #date 
