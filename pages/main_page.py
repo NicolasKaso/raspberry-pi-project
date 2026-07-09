@@ -108,7 +108,6 @@ class MainPage:
 
         am_pm = "am" if self.hour < 12 else "pm"
 
-
 #strings
 
         hour_time_string = f"{display_hour:02d}"
@@ -128,37 +127,48 @@ class MainPage:
         minute_rect = minute_surface.get_rect()
 
 
-#clock surface placement
-
-    #hour
-        hour_rect.left = start_x
-        hour_rect.centery = 170
-    
-    #minute
-        minute_rect.left = colon_rect.right
-        minute_rect.centery = 170
-
-
-#card placement                                                    #HERE IS THE PLACE TO CONTINUE
+#card placement and size
+        
+        hour_card = pygame.Rect(0, 0, 0, 0)
+        minute_card = pygame.Rect(0, 0, 0, 0)
 
         hour_card.width = hour_rect.width + 40
         minute_card.width = minute_rect.width + 40
+
+        hour_card.height = hour_rect.height + 40
+        minute_card.height = minute_rect.height + 40
 
         card_total_width = hour_card.width + minute_card.width + 20
 
         card_start_x = (800 - card_total_width) // 2
 
+        hour_card.left = card_start_x
+        hour_card.centery = 230
+
+        minute_card.left = hour_card.right + 20
+        minute_card.centery = 230
+
+
+#clock surface placement
+
+    #hour
+        hour_rect.centerx = hour_card.centerx
+        hour_rect.centery = hour_card.centery
+    
+    #minute
+        minute_rect.centerx = minute_card.centerx
+        minute_rect.centery = hour_card.centery
+
+
 
 #hour clock card
 
-        hour_card_surface = pygame.draw.rect(screen, self.GREY, card_start_x, 170, hour_rect.width + 40, hour_rect.height + 40)
-        hour_card_rect = hour_card_surface.get_rect()
+        hour_card_surface = pygame.draw.rect(screen, self.GREY, hour_card, border_radius = 25)
 
 
 #minute clock card
 
-        minute_card_surface = pygame.draw.rect(screen, self.GREY, minute_card.right + 20, 170, minute_rect.width + 40, hour_rect.height + 40)
-        minute_card_rect = minute_card_surface.get_rect()
+        minute_card_surface = pygame.draw.rect(screen, self.GREY, minute_card, border_radius = 25)
 
 
 #date 
@@ -166,21 +176,20 @@ class MainPage:
         date_surface = self.date_font.render(date_string, True, self.WHITE)
         date_rect = date_surface.get_rect()
         date_rect.centerx = 400
-        date_rect.centery = 380
+        date_rect.centery = 445
 
 
 #AM/PM
 
         am_pm_surface = self.am_pm_font.render(am_pm, True, self.WHITE)
         am_pm_rect = am_pm_surface.get_rect()
-        am_pm_rect.left = hour_rect.left + 10
+        am_pm_rect.left = minute_rect.right - 65
         am_pm_rect.top = hour_rect.bottom - 60
 
 
 #blit on the screen
 
         screen.blit(hour_surface, hour_rect)
-        screen.blit(colon_surface, colon_rect)
         screen.blit(minute_surface, minute_rect)
         screen.blit(date_surface, date_rect)
         screen.blit(am_pm_surface, am_pm_rect)
