@@ -18,6 +18,7 @@ class MainPage:
 
         self.WHITE = (255, 255, 255)
         self.GREY = (60, 60, 60)
+        self.BLACK = (0, 0, 0)
 
         now = datetime.now()
         
@@ -157,18 +158,18 @@ class MainPage:
     
     #minute
         minute_rect.centerx = minute_card.centerx
-        minute_rect.centery = hour_card.centery
+        minute_rect.centery = minute_card.centery
 
 
 
 #hour clock card
 
-        hour_card_surface = pygame.draw.rect(screen, self.GREY, hour_card, border_radius = 25)
+        pygame.draw.rect(screen, self.GREY, hour_card, border_radius = 25)
 
 
 #minute clock card
 
-        minute_card_surface = pygame.draw.rect(screen, self.GREY, minute_card, border_radius = 25)
+        pygame.draw.rect(screen, self.GREY, minute_card, border_radius = 25)
 
 
 #date 
@@ -193,4 +194,16 @@ class MainPage:
         screen.blit(minute_surface, minute_rect)
         screen.blit(date_surface, date_rect)
         screen.blit(am_pm_surface, am_pm_rect)
+
+
+#horizontal line hour
+
+        pygame.draw.line(screen, self.BLACK, (hour_card.left, hour_card.centery), (hour_card.right, hour_card.centery), width = 7)
+
+
+#horizontal line minute
+
+        pygame.draw.line(screen, self.BLACK, (minute_card.left, minute_card.centery), (minute_card.right, minute_card.centery), width = 7)
+
+
 
