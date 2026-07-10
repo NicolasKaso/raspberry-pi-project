@@ -98,7 +98,7 @@ class MainPage:
             self.year = current_year
 
 
-    def draw(self, screen, data): #drawing part of the code
+    def draw(self, screen, data):                                                       #drawing part of the code
 
 
 #12 hour logic current hour
@@ -232,25 +232,100 @@ class MainPage:
             screen.blit(hour_surface, hour_rect)
 
         else:
-            screen.blit(next_hour_surface, (hour_card.left, hour_card.top), area = (0, 0, next_hour_rect.width, (next_hour_rect.height // 2 )))
-            screen.blit(hour_surface, (hour_card.left, hour_card.centery), area = (0, next_hour_rect.height //2 , hour_rect.width, (hour_rect.height // 2 )))
+            
+            #phase 1
+            elapsed = pygame.time.get_ticks() - self.hour_animation_start
+            half_duration = FLIP_DURATION_MS / 2
+
+            if elapsed < FLIP_DURATION_MS // 2:
+                progress = elapsed / half_duration
+                scale = 1 - progress
+
+                original_height = hour_rect.height // 2
+                new_height = int(original_height * scale)
+
+                top_half_surface = hour_surface.subsurface((0, 0, hour_rect.width, original_height))
+                squished_surface = pygame.transform.scale(top_half_surface, (hour_rect.width, new_height))
+
+            #top part of the clock in phase 1
+                blit_y = hour_card.centery - new_height
+                screen.blit(squished_surface, (hour_rect.left, blit_y))
+
+            #bottom part of the clock in phase 1
+                bottom_half_surface = hour_surface.subsurface((0, original_height, hour_rect.width, hour_rect.height - original_height))
+                screen.blit(bottom_half_surface, (hour_rect.left, hour_card.centery))
+
+                
+            #phase 2
+            else:
+                progress = (elapsed - half_duration) / half_duration
+                scale = progress
+
+                original_height = next_hour_rect.height // 2
+                new_height = int(original_height * scale)
+
+                bottom_half_surface = next_hour_surface.subsurface((0, original_height, next_hour_rect.width, next_hour_rect.height - original_height))
+
+                top_half_surface = next_hour_surface.subsurface((0, 0, next_hour_rect.width, original_height))
+                squished_surface = pygame.transform.scale(top_half_surface, (next_hour_rect.width, new_height))
 
 
-            # make the top be the new number and the bottom stay the same
+                blit_y = hour_card.centery - new_height
+                screen.blit(squished_surface, (hour_rect.left, blit_y))
 
-                #wait for the animation time to end
+                screen.blit(bottom_half_surface, (hour_rect.left, hour_card.centery))
 
-                #make the top and the bottm the same
+
+
+
 
     #minute
         if self.minute_animation_start is None:
             screen.blit(minute_surface, minute_rect)
 
-
         else:
-            screen.blit(next_minute_surface, (minute_card.left, minute_card.top), area = (0, 0, next_minute_rect.width, (next_minute_rect.height //2 )))
-            screen.blit(minute_surface, (minute_card.left, minute_card.centery), area = (0, next_minute_rect.height //2 , minute_rect.width, (minute_rect.height // 2 )))
+            
+            #phase 1
+            elapsed = pygame.time.get_ticks() - self.minute_animation_start
+            half_duration = FLIP_DURATION_MS / 2
 
+            if elapsed < FLIP_DURATION_MS // 2:
+                progress = elapsed / half_duration
+                scale = 1 - progress
+
+                original_height = minute_rect.height // 2
+                new_height = int(original_height * scale)
+
+                top_half_surface = minute_surface.subsurface((0, 0, minute_rect.width, original_height))
+                squished_surface = pygame.transform.scale(top_half_surface, (minute_rect.width, new_height))
+
+            #top part of the clock in phase 1
+                blit_y = minute_card.centery - new_height
+                screen.blit(squished_surface, (minute_rect.left, blit_y))
+
+            #bottom part of the clock in phase 1
+                bottom_half_surface = minute_surface.subsurface((0, original_height, minute_rect.width, minute_rect.height - original_height))
+                screen.blit(bottom_half_surface, (minute_rect.left, minute_card.centery))
+
+                
+            #phase 2
+            else:
+                progress = (elapsed - half_duration) / half_duration
+                scale = progress
+
+                original_height = next_minute_rect.height // 2
+                new_height = int(original_height * scale)
+
+                bottom_half_surface = next_minute_surface.subsurface((0, original_height, next_minute_rect.width, next_minute_rect.height - original_height))
+
+                top_half_surface = next_minute_surface.subsurface((0, 0, next_minute_rect.width, original_height))
+                squished_surface = pygame.transform.scale(top_half_surface, (next_minute_rect.width, new_height))
+
+
+                blit_y = minute_card.centery - new_height
+                screen.blit(squished_surface, (minute_rect.left, blit_y))
+    
+                screen.blit(bottom_half_surface, (minute_rect.left, minute_card.centery))
 
 
 
