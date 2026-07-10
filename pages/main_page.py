@@ -226,56 +226,54 @@ class MainPage:
 
 
 # ANIMATION
-    
+
     #hour
         if self.hour_animation_start is None:
             screen.blit(hour_surface, hour_rect)
 
         else:
-            
-            #phase 1
             elapsed = pygame.time.get_ticks() - self.hour_animation_start
             half_duration = FLIP_DURATION_MS / 2
 
-            if elapsed < FLIP_DURATION_MS // 2:
+            if elapsed < half_duration:
                 progress = elapsed / half_duration
                 scale = 1 - progress
-
-                original_height = hour_rect.height // 2
-                new_height = int(original_height * scale)
-
-                top_half_surface = hour_surface.subsurface((0, 0, hour_rect.width, original_height))
-                squished_surface = pygame.transform.scale(top_half_surface, (hour_rect.width, new_height))
-
-            #top part of the clock in phase 1
-                blit_y = hour_card.centery - new_height
-                screen.blit(squished_surface, (hour_rect.left, blit_y))
-
-            #bottom part of the clock in phase 1
-                bottom_half_surface = hour_surface.subsurface((0, original_height, hour_rect.width, hour_rect.height - original_height))
-                screen.blit(bottom_half_surface, (hour_rect.left, hour_card.centery))
-
-                
-            #phase 2
             else:
                 progress = (elapsed - half_duration) / half_duration
                 scale = progress
 
-                original_height = next_hour_rect.height // 2
-                new_height = int(original_height * scale)
+            original_height = hour_rect.height // 2
+            new_height = max(1, int(original_height * scale))
 
-                bottom_half_surface = next_hour_surface.subsurface((0, original_height, next_hour_rect.width, next_hour_rect.height - original_height))
+            # --- build the leaf card surface ---
+            leaf = pygame.Surface((hour_card.width, new_height), pygame.SRCALPHA)
 
-                top_half_surface = next_hour_surface.subsurface((0, 0, next_hour_rect.width, original_height))
-                squished_surface = pygame.transform.scale(top_half_surface, (next_hour_rect.width, new_height))
-
-
+            if elapsed < half_duration:
+                # phase 1: old number's top half, top corners rounded, card background
+                pygame.draw.rect(leaf, self.GREY, leaf.get_rect(),
+                                  border_top_left_radius=25, border_top_right_radius=25)
+                digit_slice = hour_surface.subsurface((0, 0, hour_rect.width, original_height))
+                digit_slice = pygame.transform.scale(digit_slice, (hour_rect.width, new_height))
+                leaf.blit(digit_slice, (hour_rect.left - hour_card.left, 0))
                 blit_y = hour_card.centery - new_height
-                screen.blit(squished_surface, (hour_rect.left, blit_y))
+            else:
+                # phase 2: new number's bottom half, bottom corners rounded, card background
+                pygame.draw.rect(leaf, self.GREY, leaf.get_rect(),
+                                  border_bottom_left_radius=25, border_bottom_right_radius=25)
+                digit_slice = next_hour_surface.subsurface((0, original_height, next_hour_rect.width, next_hour_rect.height - original_height))
+                digit_slice = pygame.transform.scale(digit_slice, (next_hour_rect.width, new_height))
+                leaf.blit(digit_slice, (hour_rect.left - hour_card.left, 0))
+                blit_y = hour_card.centery
 
-                screen.blit(bottom_half_surface, (hour_rect.left, hour_card.centery))
+            screen.blit(leaf, (hour_card.left, blit_y))
 
-
+            # --- static half not covered by the leaf ---
+            if elapsed < half_duration:
+                bottom_slice = hour_surface.subsurface((0, original_height, hour_rect.width, hour_rect.height - original_height))
+                screen.blit(bottom_slice, (hour_rect.left, hour_card.centery))
+            else:
+                top_slice = next_hour_surface.subsurface((0, 0, next_hour_rect.width, original_height))
+                screen.blit(top_slice, (hour_rect.left, hour_card.centery - original_height))
 
 
 
@@ -284,48 +282,49 @@ class MainPage:
             screen.blit(minute_surface, minute_rect)
 
         else:
-            
-            #phase 1
             elapsed = pygame.time.get_ticks() - self.minute_animation_start
             half_duration = FLIP_DURATION_MS / 2
 
-            if elapsed < FLIP_DURATION_MS // 2:
+            if elapsed < half_duration:
                 progress = elapsed / half_duration
                 scale = 1 - progress
-
-                original_height = minute_rect.height // 2
-                new_height = int(original_height * scale)
-
-                top_half_surface = minute_surface.subsurface((0, 0, minute_rect.width, original_height))
-                squished_surface = pygame.transform.scale(top_half_surface, (minute_rect.width, new_height))
-
-            #top part of the clock in phase 1
-                blit_y = minute_card.centery - new_height
-                screen.blit(squished_surface, (minute_rect.left, blit_y))
-
-            #bottom part of the clock in phase 1
-                bottom_half_surface = minute_surface.subsurface((0, original_height, minute_rect.width, minute_rect.height - original_height))
-                screen.blit(bottom_half_surface, (minute_rect.left, minute_card.centery))
-
-                
-            #phase 2
             else:
                 progress = (elapsed - half_duration) / half_duration
                 scale = progress
 
-                original_height = next_minute_rect.height // 2
-                new_height = int(original_height * scale)
+            original_height = minute_rect.height // 2
+            new_height = max(1, int(original_height * scale))
 
-                bottom_half_surface = next_minute_surface.subsurface((0, original_height, next_minute_rect.width, next_minute_rect.height - original_height))
+            # --- build the leaf card surface ---
+            leaf = pygame.Surface((minute_card.width, new_height), pygame.SRCALPHA)
 
-                top_half_surface = next_minute_surface.subsurface((0, 0, next_minute_rect.width, original_height))
-                squished_surface = pygame.transform.scale(top_half_surface, (next_minute_rect.width, new_height))
-
-
+            if elapsed < half_duration:
+                # phase 1: old number's top half, top corners rounded, card background
+                pygame.draw.rect(leaf, self.GREY, leaf.get_rect(),
+                                  border_top_left_radius=25, border_top_right_radius=25)
+                digit_slice = minute_surface.subsurface((0, 0, minute_rect.width, original_height))
+                digit_slice = pygame.transform.scale(digit_slice, (minute_rect.width, new_height))
+                leaf.blit(digit_slice, (minute_rect.left - minute_card.left, 0))
                 blit_y = minute_card.centery - new_height
-                screen.blit(squished_surface, (minute_rect.left, blit_y))
-    
-                screen.blit(bottom_half_surface, (minute_rect.left, minute_card.centery))
+            else:
+                # phase 2: new number's bottom half, bottom corners rounded, card background
+                pygame.draw.rect(leaf, self.GREY, leaf.get_rect(),
+                                  border_bottom_left_radius=25, border_bottom_right_radius=25)
+                digit_slice = next_minute_surface.subsurface((0, original_height, next_minute_rect.width, next_minute_rect.height - original_height))
+                digit_slice = pygame.transform.scale(digit_slice, (next_minute_rect.width, new_height))
+                leaf.blit(digit_slice, (minute_rect.left - minute_card.left, 0))
+                blit_y = minute_card.centery
+
+            screen.blit(leaf, (minute_card.left, blit_y))
+
+            # --- static half not covered by the leaf ---
+            if elapsed < half_duration:
+                bottom_slice = minute_surface.subsurface((0, original_height, minute_rect.width, minute_rect.height - original_height))
+                screen.blit(bottom_slice, (minute_rect.left, minute_card.centery))
+            else:
+                top_slice = next_minute_surface.subsurface((0, 0, next_minute_rect.width, original_height))
+                screen.blit(top_slice, (minute_rect.left, minute_card.centery - original_height))    
+
 
 
 
