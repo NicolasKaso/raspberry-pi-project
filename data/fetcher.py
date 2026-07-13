@@ -76,7 +76,7 @@ class Fetcher:
 
     def get_data(self):                                                                 #get_data part of the file
         with self.lock:
-            return self.data
+            return dict(self.data)
 
 
     def fetch_weather(self):
