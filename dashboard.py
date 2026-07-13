@@ -5,6 +5,7 @@ from pages.stats_page import StatsPage
 from pages.spotify_page import SpotifyPage
 from pages.tasks_page import TasksPage
 from pages.calendar_page import CalendarPage
+from pages.weather_page import WeatherPage
 from data.fetcher import Fetcher
 
 
@@ -30,6 +31,9 @@ task = TasksPage()
 
 
 calendar = CalendarPage()
+
+
+weather = WeatherPage()
 
 
 fetcher = Fetcher()
