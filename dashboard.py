@@ -64,6 +64,9 @@ while running:
             elif event.key == pygame.K_3:
                 current_page = task
 
+            elif event.key == pygame.K_6:
+                current_page = weather
+
             elif event.key == pygame.K_4:
                 current_page = spotify
 
@@ -76,11 +79,40 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    
+
+#getting the keyboard input
+    try:
+        with open("/tmp/page.txt", "r") as f:
+            contents = f.read()
+
+        contents = contents.strip()
+
+        if contents == "1":
+            current_page = page
+
+        elif contents == "2":
+            current_page = calendar
+
+        elif contents == "3":
+            current_page = task
+
+        elif contents == "4":
+            current_page = spotify
+
+        elif contents == "5":
+            current_page = stats
+
+        elif contents == "6":
+            current_page = weather
+
+    except FileNotFoundError:
+        pass
+
+
 #getting and drawing the data 
     screen.fill(BLACK)
     fetcher.update()
-    data = fetcher.get_data() 
+    data = fetcher.get_data()   
     current_page.update()
     current_page.draw(screen, data)
 
