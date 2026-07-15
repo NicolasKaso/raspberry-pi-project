@@ -14,16 +14,29 @@ class StatsPage:
     def update(self):
         pass
 
+
     def draw(self, screen, data):
-        
-        value = 65
+
+        performance = data["performance"]
+
+#CPU
+        self.draw_gauge(screen, performance["cpu"], 100, 150, "CPU")
+
+#GPU
+        self.draw_gauge(screen, performance["gpu"], 350, 150, "GPU")
+
+#RAM
+        self.draw_gauge(screen, performance["memory"], 600, 150, "MEMORY")
+
+#STORAGE
+
+
+    def draw_gauge(self, screen, value, x, y, label):
+
         angle_degrees = 180 - (value / 100) * 180
         angle_radians = math.radians(angle_degrees)
 
-        #background arc(empty)
-        pygame.draw.arc(screen, self.GREY, (0, 0, 100, 100), 0, math.radians(180), 20) 
-
-        #differant colours depending on use
+#differant colours depending on use %
         if value < 25:
             self.arc_colour = self.GREEN
 
@@ -32,7 +45,10 @@ class StatsPage:
 
         else:
             self.arc_colour = self.YELLOW
-        
-        #usage arc
-        pygame.draw.arc(screen, self.arc_colour, (0, 0, 100, 100), angle_radians, math.radians(180), 20) 
+
+#background arc(empty)
+        pygame.draw.arc(screen, self.GREY, (x, y, 100, 100), 0, math.radians(180), 20) 
+
+#usage arc
+        pygame.draw.arc(screen, self.arc_colour, (x, y, 100, 100), angle_radians, math.radians(180), 20) 
 
