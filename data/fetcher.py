@@ -1,4 +1,6 @@
 #imports
+import io
+import pygame
 import threading
 import requests
 import time
@@ -12,6 +14,9 @@ class Fetcher:
 #empty categories
 
         self.lock = threading.Lock()
+
+        self.old_song_url = None
+        self.old_song_surface = None
 
         self.base_url = "http://Nicolass-MacBook-air.local:5001"
 
@@ -106,13 +111,31 @@ class Fetcher:
 
             data = response.json()
 
+            art = data.get("art", None)
+
+            if art != self.old_song_url and art is not None:
+                image_bytes = requests.get(art).content
+                image_file = io.BytesIO(image_bytes)
+                surface = pygame.image.load(image_file)
+
+                self.old_song_url = art
+                self.old_song_surface = surface
+
+            elif art is None:
+                surface = None
+                self.old_song_url = None
+                self.old_song_surface = None
+
+            else:
+                surface = self.old_song_surface
+
             with self.lock: 
                 self.data["spotify"] = data
+                self.data["spotify"]["art_surface"] = surface
 
         except Exception as e:
             print(f"Spotify fetch failed: {e}")
             self.last_fetch["spotify"] = time.time() - self.intervals["spotify"] + 30
-
 
 
     def fetch_calendar(self):
