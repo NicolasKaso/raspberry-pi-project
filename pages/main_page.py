@@ -47,7 +47,7 @@ class MainPage:
         self.date_font = pygame.font.Font(font_path_date, 40)
 
 
-    def update(self):                                                                               #UPDATE PART OF THE CODE
+    def update(self, data):                                                                               #UPDATE PART OF THE CODE
         
         now = datetime.now()
 

@@ -19,7 +19,7 @@ class StatsPage:
         self.RED = (240, 40, 40)
         
 
-    def update(self):
+    def update(self, data):
         pass
 
     def draw(self, screen, data):

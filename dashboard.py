@@ -113,7 +113,7 @@ while running:
     screen.fill(BLACK)
     fetcher.update()
     data = fetcher.get_data()   
-    current_page.update()
+    current_page.update(data)
     current_page.draw(screen, data)
 
 
