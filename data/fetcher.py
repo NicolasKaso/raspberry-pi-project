@@ -22,6 +22,7 @@ class Fetcher:
 
         self.data = {
                 "weather": {},
+                "forecast": {},
                 "spotify": {},
                 "calendar": {},
                 "tasks": {},
@@ -30,6 +31,7 @@ class Fetcher:
 
         self.intervals = {
                 "weather": 1800,
+                "forecast": 43200,
                 "spotify": 1,
                 "calendar": 300,
                 "tasks": 300,
@@ -38,6 +40,7 @@ class Fetcher:
 
         self.last_fetch = {
                 "weather": 0,
+                "forecast": 0,
                 "spotify": 0,
                 "calendar": 0,
                 "tasks": 0,
@@ -60,6 +63,9 @@ class Fetcher:
 
                 if category == "weather":
                     threading.Thread(target = self.fetch_weather).start()
+
+                elif category == "forecast":
+                    threading.Thread(target = self.fetch_forecast).start()
 
                 elif category == "spotify":
                     threading.Thread(target = self.fetch_spotify).start()
@@ -99,6 +105,23 @@ class Fetcher:
         except Exception as e:
             print(f"Weather fetch failed: {e}")
             self.last_fetch["weather"] = time.time() - self.intervals["weather"] + 30
+
+
+    def fetch_forecast(self):
+
+        try:
+            url = self.base_url + "/forecast"
+
+            response = requests.get(url)
+
+            data = response.json()
+
+            with self.lock:
+                self.data["forecast"] = data
+
+        except Exception as e:
+            print(f"weather forecast failed: {e}")
+            self.last_fetch["forecast"] = time.time() - self.intervals["forecast"] + 30
 
 
     def fetch_spotify(self):
