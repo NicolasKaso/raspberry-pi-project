@@ -28,6 +28,9 @@ class WeatherPage:
         self.current_condition_font = pygame.font.Font(font_path, 30)
         self.current_wind_speed_font = pygame.font.Font(font_path, 40)
         self.current_humidity_font = pygame.font.Font(font_path, 40)
+        self.forecast_day_font = pygame.font.Font(font_path, 40)
+        self.forecast_temp_font = pygame.font.Font(font_path, 30)
+        self.forecast_condition_font = pygame.font.Font(font_path, 30)
 
 
     def update(self, data):                                         #UPDATE PART OF THE CODE
@@ -131,5 +134,29 @@ class WeatherPage:
 
 
 #forecast
-    
+        
+        forecast_days = data.get("forecast", {}).get("forecast", [])[1:]
+        for i, day in enumerate(forecast_days):
+            day_name = day.get("date", "")
+            avg_temp = day.get("avgtemp_c", "")
+            condition = day.get("condition", "")
 
+            day_x = 205 + (i * 390)
+
+    #dates
+            day_name_surface = self.forecast_day_font.render(day_name, True, self.WHITE)
+            day_name_rect = day_name_surface.get_rect(centerx = day_x, top = 290)
+            screen.blit(day_name_surface, day_name_rect)
+
+
+    #average temp
+            avg_temp_surface = self.forecast_temp_font.render(str(avg_temp) + "°C", True, self.GOLD)
+            avg_temp_rect = avg_temp_surface.get_rect(centerx=day_x, top=day_name_rect.bottom + 10)
+            screen.blit(avg_temp_surface, avg_temp_rect)
+
+
+    #condition
+            condition_surface = self.forecast_condition_font.render(condition, True, self.GOLD)
+            condition_rect = condition_surface.get_rect(centerx=day_x, top=avg_temp_rect.bottom + 10)
+            screen.blit(condition_surface, condition_rect)
+        
