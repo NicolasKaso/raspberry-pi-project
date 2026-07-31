@@ -172,6 +172,7 @@ class Fetcher:
 
             with self.lock: 
                 self.data["calendar"] = data
+                self.last_fetch["calendar"] = time.time()
 
         except Exception as e:
             print(f"Calendar fetch has failed: {e}")
