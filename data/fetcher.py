@@ -33,8 +33,8 @@ class Fetcher:
                 "weather": 1800,
                 "forecast": 43200,
                 "spotify": 1,
-                "calendar": 300,
-                "tasks": 300,
+                "calendar": 100,
+                "tasks": 5,
                 "performance": 1
                 }
 

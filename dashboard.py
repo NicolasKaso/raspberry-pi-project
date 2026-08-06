@@ -11,6 +11,7 @@ from data.fetcher import Fetcher
 
 pygame.init()
 screen = pygame.display.set_mode((800, 480))
+pygame.mouse.set_visible(False)
 clock = pygame.time.Clock()
 running = True
 BLACK = (0, 0, 0)
